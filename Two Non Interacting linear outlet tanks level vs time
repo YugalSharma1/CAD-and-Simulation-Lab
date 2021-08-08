@@ -1,0 +1,18 @@
+time = (0:0.1:10);
+K1=1;  % linear valve factor for tank 1  i.e F1=K1*h1
+K2=1;  % linear valve factor for tank 2  i.e F2=K2*h2
+Fi=10;
+A=1;
+syms h(t);
+ode = A*diff(h) == - K1*h + Fi; % tank 1 ode
+cond = h(0) == 0;        % initial condition
+hSol(t) = dsolve(ode, cond);    % solving for h(t)
+
+ode2 = A*diff(h) == -K2*h +K1*hSol;  %tanks 2 ode
+hSol2(t) = dsolve(ode2, cond);  % solving for h(t)
+
+plot(time,hSol2(time),time,hSol(time))   %plotting the level of water in tanks vs time
+xlabel("Time in seconds")
+ylabel("Tank level in meters")
+legend("tank2","tank1",'Location',"southeast")
+
